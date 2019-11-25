@@ -2,7 +2,11 @@
  {:repl
   {:extra-paths ["dev"]
    :extra-deps {cljdev {:git/url "https://github.com/justone/cljdev.git" :sha "0606399da2612346290c667faa1d1ac4a096e58d"}}
-   :main-opts  ["-m" "cljdev.repl"]}}
+   :main-opts  ["-m" "cljdev.repl"]}
+  :test
+  {:extra-paths ["dev" "test"]
+   :extra-deps {lambdaisland/kaocha {:mvn/version "0.0-554"}}
+   :main-opts  ["-m" "kaocha.runner"]}}
 
  :deps
  {cheshire {:mvn/version "5.9.0"}

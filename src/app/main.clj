@@ -33,28 +33,25 @@
         {:keys [file help edn json]} options]
     (cond
       help
-      {:summary summary
-       :exit 0}
+      {:exit 0}
 
       errors
       {:message (string/join "\n" errors)
-       :summary summary
        :exit 1}
 
       (not (or edn json))
       {:message "please specify which format"
-       :summary summary
        :exit 1}
 
       (and file (not (.exists ^File (io/file file))))
       {:message (str "file not found: " file)
-       :summary summary
        :exit 1}
       )))
 
 (defn print-errors
-  [errors]
-  (let [{:keys [message summary exit]} errors]
+  [parsed errors]
+  (let [{:keys [summary]} parsed
+        {:keys [message exit]} errors]
     (when message
       (println message)
       (println " "))
@@ -83,7 +80,7 @@
   (let [parsed (parse-opts args cli-options)
         {:keys [options]} parsed]
     (or (some-> (find-errors parsed)
-                (print-errors)
+                (print-errors parsed)
                 (System/exit))
         (->> (prepare-input options)
              (input->seq options)
