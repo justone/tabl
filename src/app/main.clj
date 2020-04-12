@@ -29,7 +29,7 @@
 
 (defn find-errors
   [parsed]
-  (let [{:keys [errors summary options]} parsed
+  (let [{:keys [errors options]} parsed
         {:keys [file help edn json]} options]
     (cond
       help
@@ -58,14 +58,12 @@
     (print-usage summary)
     exit))
 
-(defn prepare-input
+(defn select-input
   [options]
-  (let [{:keys [file]} options] (cond
-    file
-    (io/reader file)
-
-    (.ready ^LineNumberingPushbackReader *in*)
-    *in*)))
+  (let [{:keys [file]} options]
+    (if file
+      (io/reader file)
+      *in*)))
 
 (defn input->seq
   [options reader]
@@ -79,9 +77,9 @@
 (defn -main [& args]
   (let [parsed (parse-opts args cli-options)
         {:keys [options]} parsed]
-    (or (some-> (find-errors parsed)
-                (print-errors parsed)
-                (System/exit))
-        (->> (prepare-input options)
+    (or (some->> (find-errors parsed)
+                 (print-errors parsed)
+                 (System/exit))
+        (->> (select-input options)
              (input->seq options)
              (table/print-table)))))
