@@ -9,6 +9,8 @@
    :main-opts  ["-m" "kaocha.runner"]}}
 
  :deps
- {cheshire {:mvn/version "5.9.0"}
+ {bb-pod-racer {:git/url "git@github.com:justone/bb-pod-racer.git"
+                :sha "ce257edb13d0d477f3ed2598f37816c7cd52b437"}
+  cheshire {:mvn/version "5.9.0"}
   fancy {:mvn/version "0.2.3"}
   org.clojure/tools.cli {:mvn/version "0.4.2"}}}

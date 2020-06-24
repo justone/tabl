@@ -7,7 +7,9 @@
     [app.edn :as edn]
 
     [clojure.tools.cli :refer [parse-opts]]
-    [fancy.table :as table])
+    [fancy.table :as table]
+    [pod-racer.core :as pod]
+    )
   (:import
     [clojure.lang LineNumberingPushbackReader]
     [java.io File])
@@ -74,12 +76,26 @@
     (:json options)
     (json/reader->seq reader)))
 
+(def pod-config
+  {:pod/namespaces
+   [{:pod/ns "pod.tabl.fancy"
+     :pod/vars [{:var/name "render-table"
+                 :var/fn table/render-table}
+                {:var/name "print-table"
+                 :var/fn (fn [ctx & args]
+                           (let [{:keys [out-fn]} ctx]
+                             (->> (apply table/render-table args)
+                                  (run! out-fn))))
+                 :racer/include-context? true}]}]})
+
 (defn -main [& args]
   (let [parsed (parse-opts args cli-options)
         {:keys [options]} parsed]
-    (or (some->> (find-errors parsed)
-                 (print-errors parsed)
-                 (System/exit))
-        (->> (select-input options)
-             (input->seq options)
-             (table/print-table)))))
+    (if (System/getenv "BABASHKA_POD")
+      (pod/launch pod-config)
+      (or (some->> (find-errors parsed)
+                   (print-errors parsed)
+                   (System/exit))
+          (->> (select-input options)
+               (input->seq options)
+               (table/print-table))))))
