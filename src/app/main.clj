@@ -7,7 +7,12 @@
     [app.edn :as edn]
 
     [clojure.tools.cli :refer [parse-opts]]
-    [fancy.table :as table]
+    [doric.org :as doric.org]
+    [doric.csv :as doric.csv]
+    [doric.raw :as doric.raw]
+    [doric.html :as doric.html]
+    [doric.core :as doric :refer [csv org raw html]]
+    [fancy.table]
     [pod-racer.core :as pod]
     )
   (:import
@@ -15,11 +20,21 @@
     [java.io File])
   (:gen-class))
 
+(def formatters
+  {"fancy" fancy.table/print-table
+   "org" #(->> % (doric/table {:format org}) println)
+   "csv" #(->> % (doric/table {:format csv}) println)
+   "raw" #(->> % (doric/table {:format raw}) println)
+   "html" #(->> % (doric/table {:format html}) println)})
+
 (def cli-options
   [["-e" "--edn" "Input is JSON"]
    ["-f" "--file FILE" "File to process instead of stdin"]
    ["-j" "--json" "Input is EDN"]
    ; ["-c" "--csv" "Input is CSV"]
+   ["-m" "--mode MODE" (str "Formatting mode, available options: " (string/join ", " (keys formatters)))
+    :default "fancy"
+    :validate [#(contains? formatters %) (str "Must be one of " (string/join ", " (keys formatters)))]]
    ["-h" "--help"]])
 
 (defn print-usage
@@ -80,12 +95,20 @@
   {:pod/namespaces
    [{:pod/ns "pod.tabl.fancy"
      :pod/vars [{:var/name "render-table"
-                 :var/fn table/render-table}
+                 :var/fn fancy.table/render-table}
                 {:var/name "print-table"
                  :var/fn (fn [ctx & args]
                            (let [{:keys [out-fn]} ctx]
-                             (->> (apply table/render-table args)
+                             (->> (apply fancy.table/render-table args)
                                   (run! out-fn))))
+                 :racer/include-context? true}]}
+    {:pod/ns "pod.tabl.doric"
+     :pod/vars [{:var/name "table"
+                 :var/fn doric/table}
+                {:var/name "print-table"
+                 :var/fn (fn [ctx & args]
+                           (let [{:keys [out-fn]} ctx]
+                             (out-fn (apply doric/table args))))
                  :racer/include-context? true}]}]})
 
 (defn -main [& args]
@@ -96,6 +119,7 @@
       (or (some->> (find-errors parsed)
                    (print-errors parsed)
                    (System/exit))
-          (->> (select-input options)
-               (input->seq options)
-               (table/print-table))))))
+          (let [data (->> (select-input options)
+                          (input->seq options))
+                formatter (get formatters (:mode options))]
+            (formatter data))))))

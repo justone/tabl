@@ -28,4 +28,25 @@
               " 4    | bar  \n"
               " 4    | oof  \n")
          (with-out-str (-main "-e" "-f" "samples/test.edn"))))
+  (is (= (str "|-----+-----|\n"
+              "| Foo | Baz |\n"
+              "|-----+-----|\n"
+              "| bar | 4   |\n"
+              "| oof | 4   |\n"
+              "|-----+-----|\n")
+         (with-out-str (-main "-e" "-m" "org" "-f" "samples/test.edn"))))
+  (is (= (str "Foo Baz\n"
+              "bar 4  \n"
+              "oof 4  \n")
+         (with-out-str (-main "-e" "-m" "raw" "-f" "samples/test.edn"))))
+  (is (= (str "Foo,Baz\n"
+              "bar,4\n"
+              "oof,4\n")
+         (with-out-str (-main "-e" "-m" "csv" "-f" "samples/test.edn"))))
+  (is (= (str "<table>\n"
+              "<tr><th>Foo</th><th>Baz</th></tr>\n"
+              "<tr><td>bar</td><td>4</td></tr>\n"
+              "<tr><td>oof</td><td>4</td></tr>\n"
+              "</table>\n")
+         (with-out-str (-main "-e" "-m" "html" "-f" "samples/test.edn"))))
   )

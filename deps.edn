@@ -9,8 +9,11 @@
    :main-opts  ["-m" "kaocha.runner"]}}
 
  :deps
- {bb-pod-racer {:git/url "git@github.com:justone/bb-pod-racer.git"
+ {org.clojure/clojure {:mvn/version "1.10.2-alpha1"}
+  bb-pod-racer {:git/url "git@github.com:justone/bb-pod-racer.git"
                 :sha "ce257edb13d0d477f3ed2598f37816c7cd52b437"}
   cheshire {:mvn/version "5.9.0"}
+  doric {:git/url "https://github.com/justone/doric.git"
+         :sha "43e9b7027902c2239fc7084ee7325262cf362ba0"}
   fancy {:mvn/version "0.2.3"}
   org.clojure/tools.cli {:mvn/version "0.4.2"}}}
