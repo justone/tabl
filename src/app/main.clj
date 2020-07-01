@@ -35,7 +35,8 @@
    ["-m" "--mode MODE" (str "Formatting mode, available options: " (string/join ", " (keys formatters)))
     :default "fancy"
     :validate [#(contains? formatters %) (str "Must be one of " (string/join ", " (keys formatters)))]]
-   ["-h" "--help"]])
+   ["-h" "--help"]
+   ["-v" "--version" "Print version"]])
 
 (defn print-usage
   [summary]
@@ -47,10 +48,15 @@
 (defn find-errors
   [parsed]
   (let [{:keys [errors options]} parsed
-        {:keys [file help edn json]} options]
+        {:keys [file help edn json version]} options]
     (cond
       help
       {:exit 0}
+
+      version
+      {:message (string/trim (slurp (io/resource "VERSION")))
+       :plain true
+       :exit 0}
 
       errors
       {:message (string/join "\n" errors)
@@ -68,11 +74,14 @@
 (defn print-errors
   [parsed errors]
   (let [{:keys [summary]} parsed
-        {:keys [message exit]} errors]
-    (when message
+        {:keys [message exit plain]} errors]
+    (if plain
       (println message)
-      (println " "))
-    (print-usage summary)
+      (do
+        (when message
+          (println message)
+          (println " "))
+        (print-usage summary)))
     exit))
 
 (defn select-input

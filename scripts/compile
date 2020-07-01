@@ -15,6 +15,7 @@ $NATIVE_IMAGE \
     -cp $(clojure -Spath):classes \
     -H:Name=$app_name \
     -H:+ReportExceptionStackTraces \
+    -H:IncludeResources=VERSION \
     --initialize-at-build-time \
     --report-unsupported-elements-at-runtime \
     --verbose \

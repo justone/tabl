@@ -1,5 +1,7 @@
 (ns app.main-test
   (:require
+    [clojure.java.io :as io]
+    [clojure.string :as string]
     [clojure.test :refer [deftest is]]
     [clojure.tools.cli :refer [parse-opts]]
     [app.main :refer :all]))
@@ -11,6 +13,10 @@
 (deftest errors
   (is (= {:exit 0}
          (errors-in "-h")))
+  (is (= {:exit 0
+          :plain true
+          :message (string/trim (slurp (io/resource "VERSION")))}
+         (errors-in "--version")))
   (is (= {:exit 1
           :message "please specify which format"}
          (errors-in)))
