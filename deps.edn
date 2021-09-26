@@ -1,8 +1,8 @@
 {:aliases
  {:repl
   {:extra-paths ["dev"]
-   :extra-deps {cljdev {:git/url "https://github.com/justone/cljdev.git" :sha "0606399da2612346290c667faa1d1ac4a096e58d"}}
-   :main-opts  ["-m" "cljdev.repl"]}
+   :extra-deps {io.github.justone/cljdev {:sha "dc9171f9f091e476a734714d128704876c7fa679"}}
+   :exec-fn cljdev.repl/start}
   :test
   {:extra-paths ["dev" "test"]
    :extra-deps {lambdaisland/kaocha {:mvn/version "0.0-554"}}
