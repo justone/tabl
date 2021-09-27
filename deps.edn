@@ -15,12 +15,18 @@
 
  :deps
  {org.clojure/clojure {:mvn/version "1.10.2-alpha1"}
+  org.clojure/tools.cli {:mvn/version "0.4.2"}
   bb-pod-racer {:git/url "git@github.com:justone/bb-pod-racer.git"
                 :sha "ce257edb13d0d477f3ed2598f37816c7cd52b437"}
+  com.github.clj-easy/graal-build-time {:mvn/version "0.1.4"}
   cheshire {:mvn/version "5.9.0"}
   doric {:git/url "https://github.com/justone/doric.git"
          :sha "43e9b7027902c2239fc7084ee7325262cf362ba0"}
   fancy {:mvn/version "0.2.3"}
-  org.clojure/tools.cli {:mvn/version "0.4.2"}}
+
+  ;; GraalVM config helpers
+  com.github.clj-easy/graal-config-cheshire {:git/url   "https://github.com/clj-easy/graal-config"
+                                             :git/sha   "5d018084d3694274de75b70dee16f0c5d6a2fedc"
+                                             :deps/root "config/cheshire/cheshire"}}
 
  :paths ["src" "resources"]}
