@@ -2,17 +2,13 @@
 
 app_name=tabl
 
-rm -rf classes
-mkdir classes
-clojure -e "(compile 'app.main)"
-
 if [ -z "$NATIVE_IMAGE" ]; then
     echo 'Please set $NATIVE_IMAGE'
     exit 1
 fi
 
 $NATIVE_IMAGE \
-    -cp $(clojure -Spath):classes \
+    -jar target/$app_name-* \
     -H:Name=$app_name \
     -H:+ReportExceptionStackTraces \
     -H:IncludeResources=VERSION \
@@ -21,5 +17,4 @@ $NATIVE_IMAGE \
     --verbose \
     --no-fallback \
     --no-server \
-    "-J-Xmx3g" \
-    app.main
+    "-J-Xmx3g"
