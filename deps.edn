@@ -29,4 +29,4 @@
                                              :git/sha   "5d018084d3694274de75b70dee16f0c5d6a2fedc"
                                              :deps/root "config/cheshire/cheshire"}}
 
- :paths ["src" "resources"]}
+ :paths ["src"]}

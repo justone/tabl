@@ -8,10 +8,16 @@
 
 (def clean cb/clean)
 
+(defn write-version-resource
+  [opts]
+  (b/write-file {:path "target/classes/VERSION" :string (:version opts)})
+  opts)
+
 (defn uber
   "Build uberjar."
   [opts]
   (-> opts
       (cb/clean)
       (assoc :lib lib :version version :main 'app.main)
+      (write-version-resource)
       (cb/uber)))
