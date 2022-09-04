@@ -106,15 +106,13 @@
      :pod/vars [{:var/name "render-table"
                  :var/fn fancy.table/render-table}
                 {:var/name "print-table"
-                 :var/fn (fn [& args]
-                           (->> (apply fancy.table/render-table args)
-                                (run! print)))}]}
+                 :var/fn fancy.table/print-table}]}
     {:pod/ns "pod.tabl.doric"
      :pod/vars [{:var/name "table"
                  :var/fn doric/table}
                 {:var/name "print-table"
                  :var/fn (fn [args]
-                           (print (apply doric/table args)))}]}]})
+                           (println (apply doric/table args)))}]}]})
 
 (defn -main [& args]
   (let [parsed (parse-opts args cli-options)
