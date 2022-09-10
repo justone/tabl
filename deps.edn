@@ -1,7 +1,7 @@
 {:aliases
  {:repl
   {:extra-paths ["dev"]
-   :extra-deps {io.github.justone/cljdev {:sha "dc9171f9f091e476a734714d128704876c7fa679"}}
+   :extra-deps {io.github.justone/cljdev {:git/sha "dc9171f9f091e476a734714d128704876c7fa679"}}
    :exec-fn cljdev.repl/start}
   :test
   {:extra-paths ["dev" "test"]
@@ -10,11 +10,11 @@
 
  :deps
  {org.clojure/clojure {:mvn/version "1.10.2-alpha1"}
-  bb-pod-racer {:local/root "/home/nate/projects/bb-pod-racer/"}
-  cheshire {:mvn/version "5.9.0"}
-  doric {:git/url "https://github.com/justone/doric.git"
-         :sha "43e9b7027902c2239fc7084ee7325262cf362ba0"}
-  fancy {:mvn/version "0.2.3"}
+  bb-pod-racer/bb-pod-racer {:local/root "/home/nate/projects/bb-pod-racer/"}
+  cheshire/cheshire {:mvn/version "5.9.0"}
+  doric/doric {:git/url "https://github.com/justone/doric.git"
+               :sha "43e9b7027902c2239fc7084ee7325262cf362ba0"}
+  fancy/fancy {:mvn/version "0.2.3"}
   org.clojure/tools.cli {:mvn/version "0.4.2"}}
 
  :paths ["src" "resources"]}
