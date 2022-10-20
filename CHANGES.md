@@ -1,3 +1,13 @@
+# v0.3.0
+
+Features:
+
+* Add md (markdown) and k8s style table formatting modes
+
+Fixes:
+
+* Compatibility with latest Babashka pod protocol
+
 # v0.2.0
 
 Features:
