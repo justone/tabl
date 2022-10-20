@@ -1,21 +1,20 @@
 {:aliases
  {:repl
   {:extra-paths ["dev"]
-   :extra-deps {io.github.justone/cljdev {:sha "dc9171f9f091e476a734714d128704876c7fa679"}}
+   :extra-deps {io.github.justone/cljdev {:git/sha "dc9171f9f091e476a734714d128704876c7fa679"}}
    :exec-fn cljdev.repl/start}
   :test
   {:extra-paths ["dev" "test"]
-   :extra-deps {lambdaisland/kaocha {:mvn/version "0.0-554"}}
+   :extra-deps {lambdaisland/kaocha {:mvn/version "1.70.1086"}}
    :main-opts  ["-m" "kaocha.runner"]}}
 
  :deps
- {org.clojure/clojure {:mvn/version "1.10.2-alpha1"}
-  bb-pod-racer {:git/url "git@github.com:justone/bb-pod-racer.git"
-                :sha "ce257edb13d0d477f3ed2598f37816c7cd52b437"}
-  cheshire {:mvn/version "5.9.0"}
-  doric {:git/url "https://github.com/justone/doric.git"
-         :sha "43e9b7027902c2239fc7084ee7325262cf362ba0"}
-  fancy {:mvn/version "0.2.3"}
-  org.clojure/tools.cli {:mvn/version "0.4.2"}}
+ {org.clojure/clojure {:mvn/version "1.11.1"}
+  io.github.justone/bb-pod-racer {:git/sha "313868de0baf52a6586c760191a21c73d1858fc3"}
+  cheshire/cheshire {:mvn/version "5.11.0"}
+  doric/doric {:git/url "https://github.com/justone/doric.git"
+               :sha "43e9b7027902c2239fc7084ee7325262cf362ba0"}
+  fancy/fancy {:mvn/version "0.2.3"}
+  org.clojure/tools.cli {:mvn/version "1.0.214"}}
 
  :paths ["src" "resources"]}

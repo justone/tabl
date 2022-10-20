@@ -106,19 +106,13 @@
      :pod/vars [{:var/name "render-table"
                  :var/fn fancy.table/render-table}
                 {:var/name "print-table"
-                 :var/fn (fn [ctx & args]
-                           (let [{:keys [out-fn]} ctx]
-                             (->> (apply fancy.table/render-table args)
-                                  (run! out-fn))))
-                 :racer/include-context? true}]}
+                 :var/fn fancy.table/print-table}]}
     {:pod/ns "pod.tabl.doric"
      :pod/vars [{:var/name "table"
                  :var/fn doric/table}
                 {:var/name "print-table"
-                 :var/fn (fn [ctx & args]
-                           (let [{:keys [out-fn]} ctx]
-                             (out-fn (apply doric/table args))))
-                 :racer/include-context? true}]}]})
+                 :var/fn (fn [args]
+                           (println (apply doric/table args)))}]}]})
 
 (defn -main [& args]
   (let [parsed (parse-opts args cli-options)
