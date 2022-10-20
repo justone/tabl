@@ -1,10 +1,7 @@
 (ns app.json
-  (:require
-    [app.json.bb :as json.bb]
-    )
+  (:require [app.json.bb :as json.bb])
   (:import
-    [com.fasterxml.jackson.core JsonParser]
-    ))
+    [com.fasterxml.jackson.core JsonParser]))
 
 (defn json-seq
   [reader]

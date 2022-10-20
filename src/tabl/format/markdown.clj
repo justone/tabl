@@ -1,8 +1,6 @@
 (ns tabl.format.markdown
-  (:require
-    [clojure.string :as string]
-    [doric.core :refer [aligned-th aligned-td]]
-    ))
+  (:require [clojure.string :as string]
+            [doric.core :refer [aligned-td aligned-th]]))
 
 (def th aligned-th)
 

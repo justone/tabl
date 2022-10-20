@@ -1,11 +1,8 @@
 (ns app.edn
-  (:require
-    [clojure.edn :as edn]
-    [clojure.java.io :as io]
-    )
+  (:require [clojure.edn :as edn]
+            [clojure.java.io :as io])
   (:import
-    [java.io PushbackReader]
-    ))
+    [java.io PushbackReader]))
 
 (defn edn-seq
   [reader]

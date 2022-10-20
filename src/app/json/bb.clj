@@ -1,8 +1,6 @@
 (ns app.json.bb
-  (:require
-   [cheshire.factory :as factory]
-   [cheshire.parse :as cheshire-parse]
-   )
+  (:require [cheshire.factory :as factory]
+            [cheshire.parse :as cheshire-parse])
   (:import [com.fasterxml.jackson.core JsonFactory]
            [java.io Reader]))
 

@@ -1,33 +1,28 @@
 (ns app.main
-  (:require
-    [clojure.java.io :as io]
-    [clojure.string :as string]
-
-    [app.json :as json]
-    [app.edn :as edn]
-    [tabl.format.k8s :as format.k8s]
-    [tabl.format.markdown :as format.markdown]
-
-    [clojure.tools.cli :refer [parse-opts]]
-    [doric.org :as doric.org]
-    [doric.csv :as doric.csv]
-    [doric.raw :as doric.raw]
-    [doric.html :as doric.html]
-    [doric.core :as doric :refer [csv org raw html]]
-    [fancy.table]
-    [pod-racer.core :as pod]
-    )
+  (:require [app.edn :as edn]
+            [app.json :as json]
+            [clojure.java.io :as io]
+            [clojure.string :as string]
+            [clojure.tools.cli :refer [parse-opts]]
+            [doric.core :as doric]
+            [doric.csv]
+            [doric.html]
+            [doric.org]
+            [doric.raw]
+            [fancy.table]
+            [pod-racer.core :as pod]
+            [tabl.format.k8s]
+            [tabl.format.markdown])
   (:import
-    [clojure.lang LineNumberingPushbackReader]
     [java.io File])
   (:gen-class))
 
 (def formatters
   {"fancy" fancy.table/print-table
-   "org" #(->> % (doric/table {:format org}) println)
-   "csv" #(->> % (doric/table {:format csv}) println)
-   "raw" #(->> % (doric/table {:format raw}) println)
-   "html" #(->> % (doric/table {:format html}) println)
+   "org" #(->> % (doric/table {:format 'doric.org}) println)
+   "csv" #(->> % (doric/table {:format 'doric.csv}) println)
+   "raw" #(->> % (doric/table {:format 'doric.raw}) println)
+   "html" #(->> % (doric/table {:format 'doric.html}) println)
    "md" #(->> % (doric/table {:format 'tabl.format.markdown}) println)
    "k8s" #(->> % (doric/table {:format 'tabl.format.k8s}) println)})
 

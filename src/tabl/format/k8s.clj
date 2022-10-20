@@ -1,8 +1,6 @@
 (ns tabl.format.k8s
-  (:require
-    [clojure.string :as string]
-    [doric.core :refer [aligned-th aligned-td]]
-    ))
+  (:require [clojure.string :as string]
+            [doric.core :refer [aligned-td aligned-th]]))
 
 (defn th
   [col]
