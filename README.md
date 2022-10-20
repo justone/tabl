@@ -28,6 +28,7 @@ There are several table rendering modes available:
 |----------------------------------------------------|---------------------|
 | [fancy](https://github.com/chbrown/fancy-clojure/) | fancy               |
 | [doric](https://github.com/joegallo/doric)         | org, csv, html, raw |
+| built-in                                           | md, k8s             |
 
 
 ```
@@ -62,9 +63,13 @@ Example:
 (require '[pod.tabl.fancy :as fancy])
 (require '[pod.tabl.doric :as doric])
 
+;;
 (fancy/print-table [{:foo 1 :bar 2} {:foo 2 :bar 3}])
 (doric/print-table [{:foo 1 :bar 2} {:foo 2 :bar 3}])
+(doric/print-table {:format 'doric.org} [{:foo 1 :bar 2} {:foo 2 :bar 3}])
 ```
+
+See [pod_test.clj](./pod_test.clj) for more examples.
 
 # Development
 
@@ -76,7 +81,7 @@ documented [here](https://github.com/lread/clj-graal-docs).
 
 # License
 
-Copyright © 2019-2020 Nate Jones
+Copyright © 2019-2022 Nate Jones
 
 Distributed under the EPL License. See LICENSE.
 
