@@ -3,3 +3,6 @@
 .socket-port
 .nrepl-port
 classes/
+
+tabl
+tabl.build_artifacts.txt

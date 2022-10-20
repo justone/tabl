@@ -55,4 +55,13 @@
               "<tr><td>oof</td><td>4</td></tr>\n"
               "</table>\n")
          (with-out-str (-main "-e" "-m" "html" "-f" "samples/test.edn"))))
+  (is (= (str "FOO   BAZ\n"
+              "bar   4  \n"
+              "oof   4  \n")
+         (with-out-str (-main "-e" "-m" "k8s" "-f" "samples/test.edn"))))
+  (is (= (str " Foo | Baz \n"
+              "-----|-----\n"
+              " bar | 4   \n"
+              " oof | 4   \n")
+         (with-out-str (-main "-e" "-m" "md" "-f" "samples/test.edn"))))
   )

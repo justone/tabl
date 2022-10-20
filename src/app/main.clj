@@ -5,6 +5,8 @@
 
     [app.json :as json]
     [app.edn :as edn]
+    [tabl.format.k8s :as format.k8s]
+    [tabl.format.markdown :as format.markdown]
 
     [clojure.tools.cli :refer [parse-opts]]
     [doric.org :as doric.org]
@@ -25,7 +27,9 @@
    "org" #(->> % (doric/table {:format org}) println)
    "csv" #(->> % (doric/table {:format csv}) println)
    "raw" #(->> % (doric/table {:format raw}) println)
-   "html" #(->> % (doric/table {:format html}) println)})
+   "html" #(->> % (doric/table {:format html}) println)
+   "md" #(->> % (doric/table {:format 'tabl.format.markdown}) println)
+   "k8s" #(->> % (doric/table {:format 'tabl.format.k8s}) println)})
 
 (def cli-options
   [["-e" "--edn" "Input is JSON"]
@@ -111,7 +115,7 @@
      :pod/vars [{:var/name "table"
                  :var/fn doric/table}
                 {:var/name "print-table"
-                 :var/fn (fn [args]
+                 :var/fn (fn [& args]
                            (println (apply doric/table args)))}]}]})
 
 (defn -main [& args]
