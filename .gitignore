@@ -3,6 +3,7 @@
 .socket-port
 .nrepl-port
 classes/
+.clj-kondo/.cache/
 
 tabl
 tabl.build_artifacts.txt
