@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#_(
+  "exec" "bb" "-I" "$0" "$@"
+  )
+
+(ns gen-data)
+
+(when (= *file* (System/getProperty "babashka.file"))
+  (loop [count 10]
+    (when (pos? count)
+      (Thread/sleep (+ 100 (rand-int 1000)))
+      (prn {:dt (System/currentTimeMillis)
+            :astr (if (< (rand-int 1000) 100)
+                    "really long string"
+                    3)})
+      (recur (dec count)))))
+

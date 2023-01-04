@@ -1,6 +1,7 @@
 (ns app.main
   (:require [app.edn :as edn]
             [app.json :as json]
+            [app.stream :as stream]
             [clojure.java.io :as io]
             [clojure.string :as string]
             [clojure.tools.cli :refer [parse-opts]]
@@ -34,6 +35,7 @@
    ["-m" "--mode MODE" (str "Formatting mode, available options: " (string/join ", " (keys formatters)))
     :default "fancy"
     :validate [#(contains? formatters %) (str "Must be one of " (string/join ", " (keys formatters)))]]
+   ["-s" "--stream" "Stream table instead of waiting for all input"]
    ["-h" "--help"]
    ["-v" "--version" "Print version"]])
 
@@ -123,5 +125,8 @@
                    (System/exit))
           (let [data (->> (select-input options)
                           (input->seq options))
-                formatter (get formatters (:mode options))]
-            (formatter data))))))
+                {:keys [mode stream]} options
+                formatter (get formatters mode)]
+            (if stream
+              (run! println (stream/stream-seq mode data))
+              (formatter data)))))))
