@@ -117,16 +117,22 @@
 
 (defn -main [& args]
   (let [parsed (parse-opts args cli-options)
-        {:keys [options]} parsed]
-    (if (System/getenv "BABASHKA_POD")
-      (pod/launch pod-config)
-      (or (some->> (find-errors parsed)
-                   (print-errors parsed)
-                   (System/exit))
-          (let [data (->> (select-input options)
-                          (input->seq options))
-                {:keys [mode stream]} options
-                formatter (get formatters mode)]
-            (if stream
-              (run! println (stream/stream-seq mode data))
-              (formatter data)))))))
+        {:keys [options]} parsed
+        pod? (System/getenv "BABASHKA_POD")
+        exit? (when-not pod?
+                (some->> (find-errors parsed)
+                         (print-errors parsed)))
+        data (when-not exit?
+               (->> (select-input options)
+                    (input->seq options)))
+        {:keys [mode stream]} options
+        formatter (if stream
+                    (get stream/formatters mode)
+                    (get formatters mode))]
+    (cond
+      pod? (pod/launch pod-config)
+      exit? (System/exit exit?)
+      (not stream) (formatter data)
+      (nil? formatter) (do (println (format "streaming with mode '%s' not supported" mode))
+                           (System/exit 1))
+      :else (run! println (stream/stream-seq formatter data)))))

@@ -41,7 +41,7 @@
             " 1   | 2   "
             " 1   | 2   "
             " 1   | 2   "]
-           (stream/stream-seq "md" sample-data))))
+           (stream/stream-seq (stream/formatters "md") sample-data))))
 
   (testing "fancy"
     (is (= [" :bar | :foo "
@@ -65,7 +65,7 @@
             " 2    | 1    "
             " 2    | 1    "
             " 2    | 1    "]
-           (stream/stream-seq "fancy" sample-data))))
+           (stream/stream-seq (stream/formatters "fancy") sample-data))))
 
   (testing "k8s"
     (is (= ["FOO   BAR"
@@ -84,6 +84,6 @@
             "1     2  "
             "1     2  "
             "1     2  "]
-           (stream/stream-seq "k8s" sample-data))))
+           (stream/stream-seq (stream/formatters "k8s") sample-data))))
   )
 

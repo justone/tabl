@@ -24,11 +24,11 @@
           :header-size 1
           :trim? true}
    "md" {:render-fn #(->> % (doric/table {:format 'tabl.format.markdown}) (string/split-lines))
-          :header-size 2
-          :trim? false}
-   ; "csv" #(->> % (doric/table {:format 'doric.csv}) println)
-   ; "html" #(->> % (doric/table {:format 'doric.html}) println)
-   })
+         :header-size 2
+         :trim? false}
+   "csv" {:render-fn #(->> % (doric/table {:format 'doric.csv}) (string/split-lines))
+          :header-size 1
+          :trim? false}})
 
 ;; TODO: make configurable
 (def sample-window 5)
@@ -53,12 +53,12 @@
               :always (conj data-line))}))
 
 (defn- stream-seq*
-  [mode data state]
+  [formatter data state]
   (lazy-seq
     (when data
-      (let [{:keys [lines] :as new-state} (next-state state (formatters mode) (first data))]
-        (concat lines (stream-seq* mode (next data) new-state))))))
+      (let [{:keys [lines] :as new-state} (next-state state formatter (first data))]
+        (concat lines (stream-seq* formatter (next data) new-state))))))
 
 (defn stream-seq
-  [mode data]
-  (stream-seq* mode data initial-state))
+  [formatter data]
+  (stream-seq* formatter data initial-state))
