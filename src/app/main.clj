@@ -129,10 +129,13 @@
         formatter (if stream
                     (get stream/formatters mode)
                     (get formatters mode))]
-    (cond
-      pod? (pod/launch pod-config)
-      exit? (System/exit exit?)
-      (not stream) (formatter data)
-      (nil? formatter) (do (println (format "streaming with mode '%s' not supported" mode))
-                           (System/exit 1))
-      :else (run! println (stream/stream-seq formatter data)))))
+    (try
+      (cond
+        pod? (pod/launch pod-config)
+        exit? (System/exit exit?)
+        (not stream) (formatter data)
+        (nil? formatter) (do (println (format "streaming with mode '%s' not supported" mode))
+                             (System/exit 1))
+        :else (run! println (stream/stream-seq formatter stream/default-config data)))
+      (finally
+        (shutdown-agents)))))

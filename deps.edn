@@ -10,6 +10,7 @@
 
  :deps
  {org.clojure/clojure {:mvn/version "1.11.1"}
+  babashka/process {:mvn/version "0.4.13"}
   org.endot/bb-pod-racer {:mvn/version "0.1.9"}
   cheshire/cheshire {:mvn/version "5.11.0"}
   doric/doric {:git/url "https://github.com/justone/doric.git"

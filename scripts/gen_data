@@ -4,6 +4,8 @@
   "exec" "bb" "-I" "$0" "$@"
   )
 
+; vim: set ft=clojure:
+
 (ns gen-data)
 
 (when (= *file* (System/getProperty "babashka.file"))

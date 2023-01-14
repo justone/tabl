@@ -18,7 +18,10 @@
    {:foo 1 :bar 2}
    ])
 
-(deftest formatting
+(def test-config
+  (assoc stream/default-config :terminal-lines-fn (constantly 40)))
+
+(deftest header-print-when-data-change
   (testing "md"
     (is (= [" Foo | Bar "
             "-----|-----"
@@ -41,7 +44,7 @@
             " 1   | 2   "
             " 1   | 2   "
             " 1   | 2   "]
-           (stream/stream-seq (stream/formatters "md") sample-data))))
+           (stream/stream-seq (stream/formatters "md") test-config sample-data))))
 
   (testing "fancy"
     (is (= [" :bar | :foo "
@@ -65,7 +68,7 @@
             " 2    | 1    "
             " 2    | 1    "
             " 2    | 1    "]
-           (stream/stream-seq (stream/formatters "fancy") sample-data))))
+           (stream/stream-seq (stream/formatters "fancy") test-config sample-data))))
 
   (testing "k8s"
     (is (= ["FOO   BAR"
@@ -84,6 +87,91 @@
             "1     2  "
             "1     2  "
             "1     2  "]
-           (stream/stream-seq (stream/formatters "k8s") sample-data))))
+           (stream/stream-seq (stream/formatters "k8s") test-config sample-data))))
   )
 
+(deftest window-header-print
+  (let [data (repeat 20 {:foo 1 :bar 2})
+        config-10-rows (assoc stream/default-config :terminal-lines-fn (constantly 10))]
+    (testing "k8s"
+      (is (= ["FOO   BAR"
+              "1     2  "
+              "1     2  "
+              "1     2  "
+              "1     2  "
+              "1     2  "
+              "1     2  "
+              "1     2  "
+              "1     2  "
+              "FOO   BAR"
+              "1     2  "
+              "1     2  "
+              "1     2  "
+              "1     2  "
+              "1     2  "
+              "1     2  "
+              "1     2  "
+              "1     2  "
+              "FOO   BAR"
+              "1     2  "
+              "1     2  "
+              "1     2  "
+              "1     2  "]
+             (stream/stream-seq (stream/formatters "k8s") config-10-rows data))))
+    (testing "fancy"
+      (is (= [" :bar | :foo "
+              "------|------"
+              " 2    | 1    "
+              " 2    | 1    "
+              " 2    | 1    "
+              " 2    | 1    "
+              " 2    | 1    "
+              " 2    | 1    "
+              " 2    | 1    "
+              " :bar | :foo "
+              "------|------"
+              " 2    | 1    "
+              " 2    | 1    "
+              " 2    | 1    "
+              " 2    | 1    "
+              " 2    | 1    "
+              " 2    | 1    "
+              " 2    | 1    "
+              " :bar | :foo "
+              "------|------"
+              " 2    | 1    "
+              " 2    | 1    "
+              " 2    | 1    "
+              " 2    | 1    "
+              " 2    | 1    "
+              " 2    | 1    "]
+             (stream/stream-seq (stream/formatters "fancy") config-10-rows data))))
+    (let [tracker (atom 0)
+          config-with-resize (assoc stream/default-config
+                                    :terminal-lines-fn (fn [] (if (< (swap! tracker inc) 11)
+                                                                7
+                                                                20)))]
+      (testing "resize - k8s"
+        (is (= ["FOO   BAR"
+                "1     2  "
+                "1     2  "
+                "1     2  "
+                "1     2  "
+                "1     2  "
+                "FOO   BAR"
+                "1     2  "
+                "1     2  "
+                "1     2  "
+                "1     2  "
+                "1     2  "
+                "1     2  "
+                "1     2  "
+                "1     2  "
+                "1     2  "
+                "1     2  "
+                "1     2  "
+                "1     2  "
+                "1     2  "
+                "1     2  "
+                "1     2  "]
+               (stream/stream-seq (stream/formatters "k8s") config-with-resize data)))))))
